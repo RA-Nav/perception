@@ -196,6 +196,9 @@ Yolo26RGBD::Yolo26RGBD() : Node("yolo26_rgbd_detect") {
   declare_parameter<std::string>("obstacles_frame", "odom");  // the controller ignores any other frame
   // The depth is the median over the visible front surface; the obstacle centre lies this far behind it along the ray.
   declare_parameter<double>("obstacle_center_offset", 0.15);
+  // false: no /opti_pessi/obstacles publisher at all (a second instance with another model would clear the obstacles).
+  declare_parameter<bool>("publish_obstacles", true);
+  declare_parameter<int>("process_every_n", 1);  // run the model on one image pair out of n
 
   const std::string model = resolveWeightsPath(get_parameter("model").as_string());
   loadModel(model, resolveWeightsPath(get_parameter("labels").as_string()), get_parameter("use_gpu").as_bool());
@@ -218,6 +221,8 @@ Yolo26RGBD::Yolo26RGBD() : Node("yolo26_rgbd_detect") {
   blurPersons_ = get_parameter("blur_persons").as_bool();
   obstaclesFrame_ = get_parameter("obstacles_frame").as_string();
   centerOffset_ = get_parameter("obstacle_center_offset").as_double();
+  publishObstacles_ = get_parameter("publish_obstacles").as_bool();
+  processEveryN_ = std::max<int>(1, static_cast<int>(get_parameter("process_every_n").as_int()));
   // Own spin thread: TF keeps arriving while onImages waits for the transform at the image stamp.
   tfBuffer_ = std::make_unique<tf2_ros::Buffer>(get_clock());
   tfListener_ = std::make_unique<tf2_ros::TransformListener>(*tfBuffer_, this, true);
@@ -233,8 +238,11 @@ Yolo26RGBD::Yolo26RGBD() : Node("yolo26_rgbd_detect") {
   sync_->registerCallback(std::bind(&Yolo26RGBD::onImages, this, std::placeholders::_1, std::placeholders::_2));
 
   detPub_ = create_publisher<vision_msgs::msg::Detection3DArray>("~/detections", 10);
+  det2dPub_ = create_publisher<vision_msgs::msg::Detection2DArray>("~/detections_2d", 10);
   visPub_ = create_publisher<Image>("~/detections_image", 1);
-  obstaclePub_ = create_publisher<ObstacleArray>(get_parameter("obstacles_topic").as_string(), 1);
+  if (publishObstacles_) {
+    obstaclePub_ = create_publisher<ObstacleArray>(get_parameter("obstacles_topic").as_string(), 1);
+  }
   RCLCPP_INFO(get_logger(), "waiting for %s + %s", rgbTopic.c_str(), depthTopic.c_str());
 }
 
@@ -264,6 +272,9 @@ void Yolo26RGBD::loadModel(const std::string& model, const std::string& labels, 
 }
 
 void Yolo26RGBD::onImages(const Image::ConstSharedPtr& rgbMsg, const Image::ConstSharedPtr& depthMsg) {
+  if (frameCount_++ % static_cast<uint64_t>(processEveryN_) != 0) {
+    return;
+  }
   const cv_bridge::CvImageConstPtr rgbCv = cv_bridge::toCvShare(rgbMsg, "bgr8");
   const cv::Mat& rgb = rgbCv->image;
   cv::Mat depth;
@@ -288,6 +299,8 @@ void Yolo26RGBD::onImages(const Image::ConstSharedPtr& rgbMsg, const Image::Cons
 
   vision_msgs::msg::Detection3DArray detArray;
   detArray.header = rgbMsg->header;
+  vision_msgs::msg::Detection2DArray det2dArray;
+  det2dArray.header = rgbMsg->header;
   std::vector<DrawnDetection> drawn;
   std::vector<std::pair<uint8_t, cv::Point3d>> obstacles;  // (Obstacle type, xyz in the camera optical frame)
   for (const auto& box : result) {
@@ -298,6 +311,18 @@ void Yolo26RGBD::onImages(const Image::ConstSharedPtr& rgbMsg, const Image::Cons
                 static_cast<float>(box.box.y + box.box.height)};
     const std::string& label = names_[box.classId];
     const double z = boxDepth(depth, b);
+
+    vision_msgs::msg::Detection2D det2d;
+    det2d.header = rgbMsg->header;
+    vision_msgs::msg::ObjectHypothesisWithPose hyp2d;
+    hyp2d.hypothesis.class_id = label;
+    hyp2d.hypothesis.score = box.conf;
+    det2d.results.push_back(hyp2d);
+    det2d.bbox.center.position.x = (b.x1 + b.x2) / 2.0;
+    det2d.bbox.center.position.y = (b.y1 + b.y2) / 2.0;
+    det2d.bbox.size_x = b.x2 - b.x1;
+    det2d.bbox.size_y = b.y2 - b.y1;
+    det2dArray.detections.push_back(det2d);
     std::optional<cv::Point3d> xyz;
 
     std::string line = cv::format("%s %.2f z=%.2fm", label.c_str(), box.conf, z);
@@ -334,7 +359,10 @@ void Yolo26RGBD::onImages(const Image::ConstSharedPtr& rgbMsg, const Image::Cons
   }
 
   detPub_->publish(detArray);
-  publishObstacles(rgbMsg->header, obstacles);
+  det2dPub_->publish(det2dArray);
+  if (publishObstacles_) {
+    publishObstacles(rgbMsg->header, obstacles);
+  }
 
   // Input rate from message stamps, so it reflects sim time when use_sim_time is on.
   const double stamp = rclcpp::Time(rgbMsg->header.stamp).seconds();
@@ -343,6 +371,9 @@ void Yolo26RGBD::onImages(const Image::ConstSharedPtr& rgbMsg, const Image::Cons
   }
   lastStamp_ = stamp;
 
+  if (!show_ && visPub_->get_subscription_count() == 0) {
+    return;  // rendering a 1080p side-by-side frame nobody looks at costs more than the inference of a small model
+  }
   const std::string hud = cv::format("%zu detections | inference %.0f ms | input %.1f Hz", drawn.size(), inferMs, rate_);
   cv::Mat rgbVis;
   std::tie(rgbVis, view_) = render(rgb, depth, drawn, hud, maxDepth_, blurPersons_);

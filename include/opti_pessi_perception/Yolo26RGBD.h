@@ -10,9 +10,15 @@
 // Depth must be registered to the color frame (RealSense: align_depth.enable:=true).
 //
 // Publishes:
-//   ~/detections           vision_msgs/Detection3DArray      (camera optical frame, meters)
+//   ~/detections           vision_msgs/Detection3DArray      (camera optical frame, meters; boxes with a valid depth only)
+//   ~/detections_2d        vision_msgs/Detection2DArray      (image pixels; every box of `classes`, depth or not)
 //   ~/detections_image     sensor_msgs/Image                 (annotated RGB, persons blurred if blur_persons:=true)
-//   /opti_pessi/obstacles  legged_controllers/ObstacleArray  (persons and forklifts in odom, read by the Opti-Pessi solver)
+//   /opti_pessi/obstacles  legged_controllers/ObstacleArray  (persons and forklifts in odom, read by the Opti-Pessi solver;
+//                                                             not with publish_obstacles:=false, e.g. a second instance
+//                                                             running another model, which would clear the obstacles)
+//
+// process_every_n:=n runs the model on one image pair out of n. ~/detections_image is rendered only with show:=true or
+// a subscriber.
 
 #include <array>
 #include <cstdint>
@@ -33,6 +39,7 @@
 #include <std_msgs/msg/header.hpp>
 #include <tf2_ros/buffer.hpp>
 #include <tf2_ros/transform_listener.hpp>
+#include <vision_msgs/msg/detection2_d_array.hpp>
 #include <vision_msgs/msg/detection3_d_array.hpp>
 
 #include <legged_controllers/msg/obstacle_array.hpp>
@@ -79,6 +86,9 @@ class Yolo26RGBD : public rclcpp::Node {
   bool blurPersons_;
   std::string obstaclesFrame_;
   double centerOffset_;
+  bool publishObstacles_;
+  int processEveryN_;
+  uint64_t frameCount_ = 0;
   std::unique_ptr<tf2_ros::Buffer> tfBuffer_;
   std::unique_ptr<tf2_ros::TransformListener> tfListener_;
   std::optional<std::array<double, 9>> K_;
@@ -90,6 +100,7 @@ class Yolo26RGBD : public rclcpp::Node {
   message_filters::Subscriber<Image> rgbSub_, depthSub_;
   std::unique_ptr<Synchronizer> sync_;
   rclcpp::Publisher<vision_msgs::msg::Detection3DArray>::SharedPtr detPub_;
+  rclcpp::Publisher<vision_msgs::msg::Detection2DArray>::SharedPtr det2dPub_;
   rclcpp::Publisher<Image>::SharedPtr visPub_;
   rclcpp::Publisher<ObstacleArray>::SharedPtr obstaclePub_;
 };
