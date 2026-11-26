@@ -11,7 +11,7 @@
 #include <nav_msgs/msg/odometry.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
-#include "people_perception/DynamicPointsFilter.h"
+#include "lidar_perception/DynamicPointsFilter.h"
 
 #include "RosTest.h"
 #include "TestClouds.h"
@@ -21,7 +21,7 @@ using autoware_perception_msgs::msg::TrackedObjects;
 using diagnostic_msgs::msg::DiagnosticArray;
 using diagnostic_msgs::msg::DiagnosticStatus;
 using nav_msgs::msg::Odometry;
-using people_perception::DynamicPointsFilter;
+using lidar_perception::DynamicPointsFilter;
 using sensor_msgs::msg::PointCloud2;
 using test::bytesOf;
 using test::makeFastLioCloud;

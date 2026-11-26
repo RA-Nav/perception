@@ -2,7 +2,7 @@
 """
 train.py
 
-Fine-tunes YOLO26n (the COCO weights of opti_pessi_perception) on the synthetic exit sign dataset and exports the
+Fine-tunes YOLO26n (the COCO weights of camera_perception) on the synthetic exit sign dataset and exports the
 best weights to ONNX at a fixed 736x1280 input, the layout Yolo26RGBD (YOLOs-CPP) runs: raw head, NMS in the node
 (nms unset, like weights/yolo26n.onnx), static shape (a dynamic one would make YOLOs-CPP fall back to 640x640).
 
@@ -21,8 +21,8 @@ import shutil
 from ultralytics import YOLO
 
 PKG = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-WORKSPACE = os.path.dirname(os.path.dirname(PKG))
-BASE = os.path.join(WORKSPACE, "src", "legged_control", "opti_pessi_perception", "weights", "yolo26n.pt")
+WORKSPACE = os.path.dirname(os.path.dirname(os.path.dirname(PKG)))
+BASE = os.path.join(os.path.dirname(PKG), "camera_perception", "weights", "yolo26n.pt")
 
 
 def main():

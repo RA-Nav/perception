@@ -1,11 +1,11 @@
-#include "people_perception/DetectorCloud.h"
+#include "lidar_perception/DetectorCloud.h"
 
 #include <cmath>
 #include <cstring>
 
-#include "people_perception/CloudLayout.h"
+#include "lidar_perception/CloudLayout.h"
 
-namespace people_perception {
+namespace lidar_perception {
 
 namespace {
 
@@ -87,4 +87,4 @@ bool toDetectorCloud(const sensor_msgs::msg::PointCloud2& body_cloud, const Eige
   return true;
 }
 
-}  // namespace people_perception
+}  // namespace lidar_perception

@@ -25,28 +25,28 @@
                                                    second (a setup_ranav.sh build without CUDA leaves it out)
        The model and the venv are looked for in the workspace this package is installed from (<ws>/install/..). -->
   <arg name="detector" default="auto" description="auto (centerpoint when autoware_lidar_centerpoint is installed, else centerpoint_cpu), centerpoint (TensorRT, needs CUDA) or centerpoint_cpu (ONNX Runtime on the CPU)"/>
-  <arg name="python" default="$(find-pkg-prefix people_perception)/../../.venv/bin/python" description="With detector:=centerpoint_cpu: interpreter that has onnxruntime"/>
+  <arg name="python" default="$(find-pkg-prefix lidar_perception)/../../.venv/bin/python" description="With detector:=centerpoint_cpu: interpreter that has onnxruntime"/>
   <arg name="people" default="false" description="Detect and track people and take them out of the scans for SC-PGO and TARE"/>
-  <arg name="centerpoint_model" default="$(find-pkg-prefix people_perception)/../../models/lidar_centerpoint/v4.1/short_range"
+  <arg name="centerpoint_model" default="$(find-pkg-prefix lidar_perception)/../../models/lidar_centerpoint/v4.1/short_range"
        description="Folder of the CenterPoint model: its two .onnx, ml_package.param.yaml, detection_class_remapper.param.yaml; the TensorRT engines are built there on the first start"/>
   <arg name="opti_pessi_obstacles" default="true"
        description="With people:=true: the confirmed people are the obstacles of OptiPessiController (/opti_pessi/obstacles). false when another node publishes that topic"/>
   <arg name="use_sim_time" default="true"/>
 
-  <let name="config" value="$(find-pkg-share people_perception)/config"/>
+  <let name="config" value="$(find-pkg-share lidar_perception)/config"/>
   <let if="$(equals $(var detector) auto)" name="detector"
        value="$(eval &quot;'centerpoint' if ament_index_python.has_resource('packages', 'autoware_lidar_centerpoint') else 'centerpoint_cpu'&quot; ament_index_python)"/>
 
-  <node pkg="people_perception" exec="dynamic_points_filter" name="dynamic_points_filter" output="screen">
+  <node pkg="lidar_perception" exec="dynamic_points_filter" name="dynamic_points_filter" output="screen">
     <param from="$(var config)/dynamic_points_filter.yaml"/>
     <param name="enabled" value="$(var people)"/>
   </node>
 
   <group if="$(var people)">
-    <node pkg="people_perception" exec="detector_cloud_adapter" name="detector_cloud_adapter" output="screen">
+    <node pkg="lidar_perception" exec="detector_cloud_adapter" name="detector_cloud_adapter" output="screen">
       <param from="$(var config)/detector_cloud_adapter.yaml"/>
     </node>
-    <node pkg="people_perception" exec="people_tracker" name="people_tracker" output="screen">
+    <node pkg="lidar_perception" exec="people_tracker" name="people_tracker" output="screen">
       <param from="$(var config)/people_tracker.yaml"/>
       <param name="obstacles.enabled" value="$(var opti_pessi_obstacles)"/>
       <param name="use_sim_time" value="$(var use_sim_time)"/>
@@ -61,7 +61,7 @@
       <arg name="model_path" value="$(var centerpoint_model)"/>
       <arg name="common_param_path" value="$(var config)/centerpoint_common.param.yaml"/>
     </include>
-    <node if="$(equals $(var detector) centerpoint_cpu)" pkg="people_perception" exec="centerpoint_cpu.py"
+    <node if="$(equals $(var detector) centerpoint_cpu)" pkg="lidar_perception" exec="centerpoint_cpu.py"
           name="lidar_centerpoint" output="screen" launch-prefix="$(var python)">
       <remap from="~/input/pointcloud" to="/perception/detector/pointcloud"/>
       <remap from="~/output/objects" to="/perception/detector/objects"/>

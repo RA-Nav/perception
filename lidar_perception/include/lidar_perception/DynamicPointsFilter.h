@@ -41,9 +41,9 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
-#include "people_perception/CloudFilter.h"
+#include "lidar_perception/CloudFilter.h"
 
-namespace people_perception {
+namespace lidar_perception {
 
 class DynamicPointsFilter : public rclcpp::Node {
  public:
@@ -117,4 +117,4 @@ class DynamicPointsFilter : public rclcpp::Node {
   double longest_wait_ = 0.0;
 };
 
-}  // namespace people_perception
+}  // namespace lidar_perception

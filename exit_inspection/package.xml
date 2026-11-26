@@ -21,7 +21,7 @@
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>python3-numpy</exec_depend>
   <exec_depend>python3-yaml</exec_depend>
-  <exec_depend>opti_pessi_perception</exec_depend>
+  <exec_depend>camera_perception</exec_depend>
   <exec_depend>nav_msgs</exec_depend>
   <exec_depend>ranav_bringup</exec_depend>  <!-- far_planner_launch.xml -->
 

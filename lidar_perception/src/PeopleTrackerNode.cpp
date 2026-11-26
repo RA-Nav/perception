@@ -1,4 +1,4 @@
-#include "people_perception/PeopleTrackerNode.h"
+#include "lidar_perception/PeopleTrackerNode.h"
 
 #include <algorithm>
 #include <cstdio>
@@ -8,7 +8,7 @@
 #include <tf2/exceptions.h>
 #include <tf2_eigen/tf2_eigen.hpp>
 
-namespace people_perception {
+namespace lidar_perception {
 
 namespace {
 
@@ -234,4 +234,4 @@ void PeopleTrackerNode::publishObstacles(const builtin_interfaces::msg::Time& st
   obstacles_publisher_->publish(obstacles);
 }
 
-}  // namespace people_perception
+}  // namespace lidar_perception

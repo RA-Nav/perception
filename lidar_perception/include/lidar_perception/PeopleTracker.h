@@ -13,7 +13,7 @@
 
 #include <Eigen/Dense>
 
-namespace people_perception {
+namespace lidar_perception {
 
 struct Detection {
   Eigen::Vector3d position = Eigen::Vector3d::Zero();    // box centre in the tracking frame [m]
@@ -78,4 +78,4 @@ class PeopleTracker {
   double stamp_ = 0.0;
 };
 
-}  // namespace people_perception
+}  // namespace lidar_perception

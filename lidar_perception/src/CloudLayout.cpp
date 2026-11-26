@@ -1,6 +1,6 @@
-#include "people_perception/CloudLayout.h"
+#include "lidar_perception/CloudLayout.h"
 
-namespace people_perception {
+namespace lidar_perception {
 
 int float32Offset(const sensor_msgs::msg::PointCloud2& cloud, const std::string& name) {
   for (const auto& field : cloud.fields) {
@@ -32,4 +32,4 @@ sensor_msgs::msg::PointCloud2 emptyLike(const sensor_msgs::msg::PointCloud2& lik
   return cloud;
 }
 
-}  // namespace people_perception
+}  // namespace lidar_perception

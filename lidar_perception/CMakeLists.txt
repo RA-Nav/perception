@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(people_perception)
+project(lidar_perception)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -98,7 +98,7 @@ if(BUILD_TESTING)
     target_link_libraries(${test_name} ${PROJECT_NAME}_nodes)
     ament_target_dependencies(${test_name} diagnostic_msgs tf2_msgs)
     target_compile_definitions(${test_name} PRIVATE
-      PEOPLE_PERCEPTION_CONFIG_DIR="${CMAKE_CURRENT_SOURCE_DIR}/config"
+      LIDAR_PERCEPTION_CONFIG_DIR="${CMAKE_CURRENT_SOURCE_DIR}/config"
     )
   endforeach()
 

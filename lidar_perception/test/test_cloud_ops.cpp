@@ -6,17 +6,17 @@
 #include <string>
 #include <vector>
 
-#include "people_perception/CloudFilter.h"
-#include "people_perception/DetectorCloud.h"
+#include "lidar_perception/CloudFilter.h"
+#include "lidar_perception/DetectorCloud.h"
 
 #include "TestClouds.h"
 
-using people_perception::Cylinder;
-using people_perception::DetectorCloudParams;
-using people_perception::levelFromBody;
-using people_perception::removeInsideCylinders;
-using people_perception::toDetectorCloud;
-using people_perception::yawOf;
+using lidar_perception::Cylinder;
+using lidar_perception::DetectorCloudParams;
+using lidar_perception::levelFromBody;
+using lidar_perception::removeInsideCylinders;
+using lidar_perception::toDetectorCloud;
+using lidar_perception::yawOf;
 using sensor_msgs::msg::PointCloud2;
 using sensor_msgs::msg::PointField;
 using test::bytesOf;

@@ -14,7 +14,7 @@ starts the mission. Designs in the RaNAV workspace: `docs/superpowers/specs/2026
 D435i 1920x1080 @ 15 Hz
    │ /camera/color/image_raw + /camera/aligned_depth_to_color/image_raw
    ▼
-exit_sign_detector  (opti_pessi_perception Yolo26RGBD, exit sign ONNX, publish_obstacles:=false)
+exit_sign_detector  (camera_perception Yolo26RGBD, exit sign ONNX, publish_obstacles:=false)
    │ /exit_sign_detector/detections_2d   vision_msgs/Detection2DArray
    ▼
 exit_landmark_mapper.py ◄── /registered_scan_static (camera_init), TF camera_init <- lio_base, base <- camera
@@ -136,5 +136,5 @@ Pictograms: `exit_inspection/assets/iso7010/` (Wikimedia Commons, public domain)
 ## Tests
 
 ```bash
-python3 -m pytest src/exit_inspection/test -q
+python3 -m pytest src/perception/exit_inspection/test -q
 ```

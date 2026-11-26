@@ -11,7 +11,7 @@
 #include <Eigen/Geometry>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
-namespace people_perception {
+namespace lidar_perception {
 
 /// Vertical cylinder around a person, in the frame the tracks are in.
 struct Cylinder {
@@ -32,4 +32,4 @@ std::optional<size_t> removeInsideCylinders(const sensor_msgs::msg::PointCloud2&
                                             sensor_msgs::msg::PointCloud2& kept,
                                             sensor_msgs::msg::PointCloud2* removed = nullptr);
 
-}  // namespace people_perception
+}  // namespace lidar_perception

@@ -1,4 +1,4 @@
-#include "opti_pessi_perception/Yolo26RGBD.h"
+#include "camera_perception/Yolo26RGBD.h"
 
 #include <algorithm>
 #include <chrono>
@@ -20,7 +20,7 @@
 
 #include <yolos/tasks/detection.hpp>
 
-namespace opti_pessi_perception {
+namespace camera_perception {
 
 namespace {
 
@@ -49,7 +49,7 @@ std::string resolveWeightsPath(const std::string& path) {
     return path;
   }
   const std::filesystem::path installed =
-      std::filesystem::path(ament_index_cpp::get_package_share_directory("opti_pessi_perception")) / "weights" / path;
+      std::filesystem::path(ament_index_cpp::get_package_share_directory("camera_perception")) / "weights" / path;
   return std::filesystem::exists(installed) ? installed.string() : path;
 }
 
@@ -251,7 +251,7 @@ Yolo26RGBD::~Yolo26RGBD() = default;
 
 void Yolo26RGBD::loadModel(const std::string& model, const std::string& labels, bool useGpu) {
   if (!std::filesystem::exists(model)) {
-    throw std::runtime_error("model " + model + " not found in share/opti_pessi_perception/weights or the current directory: "
+    throw std::runtime_error("model " + model + " not found in share/camera_perception/weights or the current directory: "
                              "export it with `yolo export model=<weights>.pt format=onnx`");
   }
   try {
@@ -408,4 +408,4 @@ void Yolo26RGBD::publishObstacles(const std_msgs::msg::Header& header, const std
   obstaclePub_->publish(msg);
 }
 
-}  // namespace opti_pessi_perception
+}  // namespace camera_perception

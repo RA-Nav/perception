@@ -1,4 +1,4 @@
-# people_perception
+# lidar_perception
 
 People detection and tracking on the lidar scans of FAST-LIO, for a quadruped that explores a warehouse with a
 RoboSense Airy. It does three things with the people it tracks:
@@ -7,7 +7,7 @@ RoboSense Airy. It does three things with the people it tracks:
 2. keeps their points **out of the exploration coverage** of TARE,
 3. hands them to the **Opti-Pessi MPC controller** as dynamic obstacles.
 
-One package, `people_perception`: three C++ nodes, CenterPoint on the CPU (`scripts/centerpoint_cpu.py`), the launch
+One package, `lidar_perception`: three C++ nodes, CenterPoint on the CPU (`scripts/centerpoint_cpu.py`), the launch
 file, the config files, the tests and a dataset tool.
 
 ## Two clouds from every scan
@@ -51,7 +51,7 @@ that stamp unchanged: it is the key that pairs clouds, detections and tracks.
 ## Running it
 
 The launch file is included by `fast_lio_slam_launch.xml` of the `ranav_bringup` package, which forwards the
-arguments below. **Do not launch `people_perception_launch.xml` by hand next to it**: a second filter would double
+arguments below. **Do not launch `lidar_perception_launch.xml` by hand next to it**: a second filter would double
 every scan.
 
 ```bash
@@ -186,7 +186,7 @@ Stands between FAST-LIO and what accumulates its scans.
 ## Build
 
 ```bash
-colcon build --packages-select people_perception
+colcon build --packages-select lidar_perception
 ```
 
 | Dependency | Where it comes from |
@@ -203,7 +203,7 @@ Config and launch files are installed as copies: an edit does nothing until the 
 ## Tests and checks
 
 ```bash
-colcon test --packages-select people_perception --event-handlers console_direct+
+colcon test --packages-select lidar_perception --event-handlers console_direct+
 ```
 
 The node tests run the nodes in process on a `ROS_DOMAIN_ID` of their own, away from a running stack.
@@ -230,7 +230,7 @@ the clouds the detector node receives.
 
 ```bash
 ros2 bag record -o <bag> /perception/detector/pointcloud /perception/detector/objects /tf /tf_static /Odometry
-ros2 run people_perception export_detector_dataset.py <bag> <out_dir> --every-seconds 0.5
+ros2 run lidar_perception export_detector_dataset.py <bag> <out_dir> --every-seconds 0.5
 ```
 
 | Output | |

@@ -367,7 +367,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("images", help="folder with the real photos")
     ap.add_argument("--out", default=os.path.expanduser("~/ranav_ws/datasets/exit_sign/real"))
-    ap.add_argument("--weights", default=os.path.join(os.path.dirname(PKG), "legged_control", "opti_pessi_perception",
+    ap.add_argument("--weights", default=os.path.join(os.path.dirname(PKG), "camera_perception",
                                                       "weights", "yolo26n.pt"),
                     help="starting weights; pass a previous best.pt to continue from an earlier fine-tune")
     ap.add_argument("--synthetic", help="data.yaml of make_synthetic.py, its train set is mixed in")

@@ -17,7 +17,7 @@ cp = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(cp)
 
 CLASSES = ['CAR', 'TRUCK', 'BUS', 'BICYCLE', 'PEDESTRIAN']
-MODEL = os.environ.get('CENTERPOINT_MODEL', os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'models', 'lidar_centerpoint', 'v4.1', 'short_range'))
+MODEL = os.environ.get('CENTERPOINT_MODEL', os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '..', 'models', 'lidar_centerpoint', 'v4.1', 'short_range'))
 
 
 def config(half_range=5.12, encoder_features=10, max_voxels=64000, bins=(50.0, 90.0, 121.0, 200.0), threshold=0.35):

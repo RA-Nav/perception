@@ -4,7 +4,7 @@ centerpoint_cpu.py (ROS 2 Python)
 
 autoware_lidar_centerpoint without CUDA and TensorRT: the same CenterPoint model (the two ONNX files of
 centerpoint_model), the same parameter files and the same topics, run with ONNX Runtime on the CPU. For a computer
-without an NVIDIA GPU (the NUC of the robot). people_perception_launch.xml starts it in place of the TensorRT node with
+without an NVIDIA GPU (the NUC of the robot). lidar_perception_launch.xml starts it in place of the TensorRT node with
 detector:=centerpoint_cpu.
 
 Every step is the one of autoware_lidar_centerpoint (commit 8413d41), CUDA kernels rewritten with numpy:

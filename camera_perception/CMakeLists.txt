@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(opti_pessi_perception)
+project(camera_perception)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -20,7 +20,7 @@ find_package(legged_controllers REQUIRED)  # only for its Obstacle/ObstacleArray
 find_package(OpenCV REQUIRED COMPONENTS core imgproc highgui imgcodecs)
 
 # YOLOs-CPP is header-only. Its own CMakeLists only builds demos, so the checkout carries COLCON_IGNORE.
-set(YOLOS_CPP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../YOLOs-CPP" CACHE PATH "YOLOs-CPP checkout")
+set(YOLOS_CPP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../third_party/YOLOs-CPP" CACHE PATH "YOLOs-CPP checkout")
 set(ONNXRUNTIME_DIR "${YOLOS_CPP_DIR}/onnxruntime-linux-x64-gpu-1.20.1" CACHE PATH "ONNX Runtime release (include/, lib/)")
 get_filename_component(YOLOS_CPP_DIR "${YOLOS_CPP_DIR}" ABSOLUTE)
 get_filename_component(ONNXRUNTIME_DIR "${ONNXRUNTIME_DIR}" ABSOLUTE)

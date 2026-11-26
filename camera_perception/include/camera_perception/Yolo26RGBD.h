@@ -5,7 +5,7 @@
 // C++ port of yolo/yolo26_rgbd_detect.py: same node name, parameters and topics, but `model` is an ONNX export:
 //   .venv-yolo/bin/yolo export model=yolo/yolo26n.pt format=onnx
 // A relative `model` or `labels` path is looked up in this package's weights/ folder (installed to
-// share/opti_pessi_perception/weights, rebuild after adding a file), then from the current directory.
+// share/camera_perception/weights, rebuild after adding a file), then from the current directory.
 //
 // Depth must be registered to the color frame (RealSense: align_depth.enable:=true).
 //
@@ -49,7 +49,7 @@ namespace yolos::det {
 class YOLODetector;
 }  // namespace yolos::det
 
-namespace opti_pessi_perception {
+namespace camera_perception {
 
 class Yolo26RGBD : public rclcpp::Node {
  public:
@@ -105,4 +105,4 @@ class Yolo26RGBD : public rclcpp::Node {
   rclcpp::Publisher<ObstacleArray>::SharedPtr obstaclePub_;
 };
 
-}  // namespace opti_pessi_perception
+}  // namespace camera_perception

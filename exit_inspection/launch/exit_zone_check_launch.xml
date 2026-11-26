@@ -2,7 +2,7 @@
   <!-- Zone verdicts in front of the exit doors (sub-project 2 of the emergency exit inspection,
        docs/superpowers/specs/2026-11-11-exit-zone-checker-design.md in the RaNAV workspace).
 
-       person_detector: a Yolo26RGBD (opti_pessi_perception) with the COCO model, class person, on the D435i color +
+       person_detector: a Yolo26RGBD (camera_perception) with the COCO model, class person, on the D435i color +
          aligned depth; its ~/detections (3D) tell the checker where people stand. publish_obstacles is false: an
          instance publishing on /opti_pessi/obstacles would replace the controller's obstacles every frame.
        exit_zone_checker: D435i raw depth + /registered_scan_static in a grid per exit, verdicts on
@@ -14,13 +14,13 @@
   <arg name="exits_file" default=""
        description="exits.yaml to check; empty: SC-PGO's save_directory/exit_inspection/exits.yaml (asked to alaserPGO)"/>
   <arg name="person_detector" default="true" description="Start the person Yolo26RGBD instance"/>
-  <arg name="person_model" default="yolo26n.onnx" description="COCO model, file in opti_pessi_perception/weights or a path"/>
+  <arg name="person_model" default="yolo26n.onnx" description="COCO model, file in camera_perception/weights or a path"/>
   <arg name="use_gpu" default="true"/>
   <arg name="person_every_n" default="3" description="Run the person detector on one image pair out of n"/>
   <arg name="w_min" default="0.9" description="Free corridor width [m]"/>
   <arg name="debug_dump" default="false" description="Save the inputs of the latest evaluation of every exit"/>
 
-  <node if="$(var person_detector)" pkg="opti_pessi_perception" exec="yolo26_rgbd_detect" name="person_detector"
+  <node if="$(var person_detector)" pkg="camera_perception" exec="yolo26_rgbd_detect" name="person_detector"
         output="screen">
     <param name="use_sim_time" value="$(var use_sim_time)"/>
     <param name="model" value="$(var person_model)"/>

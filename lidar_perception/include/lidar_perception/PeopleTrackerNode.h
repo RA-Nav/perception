@@ -38,9 +38,9 @@
 #include <tf2_ros/transform_listener.h>
 #include <visualization_msgs/msg/marker_array.hpp>
 
-#include "people_perception/PeopleTracker.h"
+#include "lidar_perception/PeopleTracker.h"
 
-namespace people_perception {
+namespace lidar_perception {
 
 class PeopleTrackerNode : public rclcpp::Node {
  public:
@@ -71,4 +71,4 @@ class PeopleTrackerNode : public rclcpp::Node {
   rclcpp::Subscription<DetectedObjects>::SharedPtr subscription_;
 };
 
-}  // namespace people_perception
+}  // namespace lidar_perception

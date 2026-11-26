@@ -9,7 +9,7 @@
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <std_msgs/msg/header.hpp>
 
-namespace people_perception {
+namespace lidar_perception {
 
 /// Stamp of a message [ns]: the key that pairs the clouds, the odometry and the tracks of a scan.
 inline int64_t stampOf(const std_msgs::msg::Header& header) { return rclcpp::Time(header.stamp).nanoseconds(); }
@@ -23,4 +23,4 @@ bool hasAllPoints(const sensor_msgs::msg::PointCloud2& cloud);
 /// An unorganized cloud without points, with the header and the layout of `like`.
 sensor_msgs::msg::PointCloud2 emptyLike(const sensor_msgs::msg::PointCloud2& like);
 
-}  // namespace people_perception
+}  // namespace lidar_perception

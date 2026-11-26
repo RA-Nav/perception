@@ -11,7 +11,7 @@
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <visualization_msgs/msg/marker_array.hpp>
 
-#include "people_perception/PeopleTrackerNode.h"
+#include "lidar_perception/PeopleTrackerNode.h"
 
 #include "RosTest.h"
 
@@ -23,7 +23,7 @@ using autoware_perception_msgs::msg::TrackedObject;
 using autoware_perception_msgs::msg::TrackedObjects;
 using legged_controllers::msg::Obstacle;
 using legged_controllers::msg::ObstacleArray;
-using people_perception::PeopleTrackerNode;
+using lidar_perception::PeopleTrackerNode;
 using visualization_msgs::msg::Marker;
 using visualization_msgs::msg::MarkerArray;
 using namespace std::chrono_literals;

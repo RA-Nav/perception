@@ -30,7 +30,7 @@
         # The confirmed tracks as the obstacles of OptiPessiController (legged_controllers/ObstacleArray, HUMAN). Its
         # radius and maximum speed are those of task.info; it keeps the closest obstacles for its slots
         obstacles:
-            enabled: true                # people_perception_launch.xml opti_pessi_obstacles sets it. false when another
+            enabled: true                # lidar_perception_launch.xml opti_pessi_obstacles sets it. false when another
                                          # node publishes the topic (yolo26_rgbd_detect): each would erase the other
             topic: /opti_pessi/obstacles
             frame: odom                  # the only frame the controller takes; reached with the latest TF

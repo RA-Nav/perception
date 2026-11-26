@@ -2,14 +2,14 @@
   <!-- Exit sign landmarks during an exploration (sub-project 1 of the emergency exit inspection,
        docs/superpowers/specs/2026-11-11-exit-detection-mapping-design.md in the RaNAV workspace).
 
-       exit_sign_detector: a second Yolo26RGBD (opti_pessi_perception) running the exit sign model on the D435i;
+       exit_sign_detector: a second Yolo26RGBD (camera_perception) running the exit sign model on the D435i;
          publishes /exit_sign_detector/detections_2d. publish_obstacles is false: an instance publishing on
          /opti_pessi/obstacles would replace the controller's obstacles with its (empty) set every frame.
        exit_landmark_mapper: casts every box into /registered_scan_static (FAST-LIO, camera_init), logs the sightings
          to <save_directory>/exit_inspection/sightings.csv and shows the exits on /exit_inspection/exit_markers.
        finalize_exits.py <save_directory> writes exits.yaml at the end (tare_finish_merge_map.py exits:=true).
 
-       Needs FAST-LIO (camera_init -> rslidar_lio -> lio_base TF, /registered_scan_static from people_perception's
+       Needs FAST-LIO (camera_init -> rslidar_lio -> lio_base TF, /registered_scan_static from lidar_perception's
        dynamic_points_filter, both started by fast_lio_slam_launch.xml) and the D435i topics. -->
   <arg name="use_sim_time" default="true"/>
   <arg name="model" default="$(find-pkg-prefix exit_inspection)/../../models/exit_sign/exit_sign_736x1280.onnx"
@@ -22,7 +22,7 @@
   <arg name="save_directory" default=""
        description="Sightings go to its exit_inspection/ folder; empty: SC-PGO's save_directory (asked to alaserPGO), where tare_finish_merge_map.py looks for them"/>
 
-  <node if="$(var detector)" pkg="opti_pessi_perception" exec="yolo26_rgbd_detect" name="exit_sign_detector"
+  <node if="$(var detector)" pkg="camera_perception" exec="yolo26_rgbd_detect" name="exit_sign_detector"
         output="screen">
     <param name="use_sim_time" value="$(var use_sim_time)"/>
     <param name="model" value="$(var model)"/>

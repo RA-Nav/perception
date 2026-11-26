@@ -8,13 +8,13 @@
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <tf2_msgs/msg/tf_message.hpp>
 
-#include "people_perception/DetectorCloudAdapter.h"
+#include "lidar_perception/DetectorCloudAdapter.h"
 
 #include "RosTest.h"
 #include "TestClouds.h"
 
 using nav_msgs::msg::Odometry;
-using people_perception::DetectorCloudAdapter;
+using lidar_perception::DetectorCloudAdapter;
 using sensor_msgs::msg::PointCloud2;
 using tf2_msgs::msg::TFMessage;
 using test::makeFastLioCloud;

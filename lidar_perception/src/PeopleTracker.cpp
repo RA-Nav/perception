@@ -1,10 +1,10 @@
-#include "people_perception/PeopleTracker.h"
+#include "lidar_perception/PeopleTracker.h"
 
 #include <algorithm>
 #include <cmath>
 #include <limits>
 
-namespace people_perception {
+namespace lidar_perception {
 
 namespace {
 
@@ -197,4 +197,4 @@ Track PeopleTracker::start(const Detection& detection, double stamp) const {
   return track;
 }
 
-}  // namespace people_perception
+}  // namespace lidar_perception

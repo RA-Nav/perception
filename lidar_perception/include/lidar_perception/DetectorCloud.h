@@ -12,7 +12,7 @@
 #include <Eigen/Geometry>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
-namespace people_perception {
+namespace lidar_perception {
 
 inline constexpr uint32_t kDetectorPointStep = 16;
 
@@ -38,4 +38,4 @@ bool toDetectorCloud(const sensor_msgs::msg::PointCloud2& body_cloud, const Eige
                      const DetectorCloudParams& params, const std::string& level_frame,
                      sensor_msgs::msg::PointCloud2& out);
 
-}  // namespace people_perception
+}  // namespace lidar_perception

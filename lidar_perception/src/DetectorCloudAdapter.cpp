@@ -1,13 +1,13 @@
-#include "people_perception/DetectorCloudAdapter.h"
+#include "lidar_perception/DetectorCloudAdapter.h"
 
 #include <cmath>
 #include <utility>
 
 #include <geometry_msgs/msg/transform_stamped.hpp>
 
-#include "people_perception/CloudLayout.h"
+#include "lidar_perception/CloudLayout.h"
 
-namespace people_perception {
+namespace lidar_perception {
 
 DetectorCloudAdapter::DetectorCloudAdapter(const rclcpp::NodeOptions& options)
     : Node("detector_cloud_adapter", options) {
@@ -97,4 +97,4 @@ void DetectorCloudAdapter::convert(const PointCloud2& cloud, const Odometry& odo
   publisher_->publish(std::move(out));
 }
 
-}  // namespace people_perception
+}  // namespace lidar_perception

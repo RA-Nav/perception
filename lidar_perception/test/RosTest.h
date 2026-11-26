@@ -15,7 +15,7 @@ namespace test {
 // The yaml the launch loads for a node, so the tests run what ships.
 inline rclcpp::NodeOptions shippedConfig(const std::string& file) {
   return rclcpp::NodeOptions().arguments(
-      {"--ros-args", "--params-file", std::string(PEOPLE_PERCEPTION_CONFIG_DIR) + "/" + file});
+      {"--ros-args", "--params-file", std::string(LIDAR_PERCEPTION_CONFIG_DIR) + "/" + file});
 }
 
 // A node under test and a helper node (io_) that publishes its inputs and collects its outputs, spun together.

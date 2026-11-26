@@ -1,8 +1,8 @@
-// Runs opti_pessi_perception::Yolo26RGBD (see include/opti_pessi_perception/Yolo26RGBD.h) with an optional viewer.
+// Runs camera_perception::Yolo26RGBD (see include/camera_perception/Yolo26RGBD.h) with an optional viewer.
 //
 // Run:
-//   ros2 run opti_pessi_perception yolo26_rgbd_detect
-//   ros2 run opti_pessi_perception yolo26_rgbd_detect --ros-args -p use_sim_time:=true
+//   ros2 run camera_perception yolo26_rgbd_detect
+//   ros2 run camera_perception yolo26_rgbd_detect --ros-args -p use_sim_time:=true
 //
 // Viewer window (show:=true): annotated RGB | colorized depth with the same boxes.
 //   q / Esc: quit    s: save snapshot PNG in the current directory
@@ -16,11 +16,11 @@
 #include <opencv2/imgcodecs.hpp>
 #include <rclcpp/rclcpp.hpp>
 
-#include "opti_pessi_perception/Yolo26RGBD.h"
+#include "camera_perception/Yolo26RGBD.h"
 
 namespace {
 
-using opti_pessi_perception::Yolo26RGBD;
+using camera_perception::Yolo26RGBD;
 
 constexpr char kWindow[] = "YOLO26 RGB-D";
 

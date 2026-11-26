@@ -7,7 +7,7 @@
     ros__parameters:
         enabled: false                   # false: every cloud goes out as it came in. true: without the people of
                                          # tracks_topic, which needs detector_cloud_adapter, a detector and
-                                         # people_tracker running (people_perception_launch.xml people:=true sets it)
+                                         # people_tracker running (lidar_perception_launch.xml people:=true sets it)
         qos_depth: 20                    # reliable, the queue length of the FAST-LIO publishers
         duplicate_check_wait: 2.0        # [s] after its start the node forwards nothing, then stops if an output is
                                          # already published: a second filter would double every scan

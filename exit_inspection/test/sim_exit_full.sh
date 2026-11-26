@@ -15,7 +15,7 @@
 #   Exit code: 0 when both checks pass.
 
 W=$(realpath -m "${1:?work dir}")
-WS=$(realpath "$(dirname "$(realpath "$0")")/../../..")  # the workspace: this is <ws>/src/exit_inspection/test
+WS=$(realpath "$(dirname "$(realpath "$0")")/../../../..")  # the workspace: this is <ws>/src/perception/exit_inspection/test
 EXPLORE_TIMEOUT=${EXPLORE_TIMEOUT:-2400}
 MISSION_TIMEOUT=${MISSION_TIMEOUT:-1800}
 export ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-83}

@@ -1,4 +1,4 @@
-# opti_pessi_perception
+# camera_perception
 
 Perception front end of the Opti-Pessi controller. The node runs **YOLO26** on the RGB image of an RGB-D camera,
 measures the distance of every detection from the depth image registered to color, and publishes the persons and
@@ -12,10 +12,10 @@ Ultralytics/PyTorch, so the model is an **ONNX export**.
 ## Layout
 
 ```
-include/opti_pessi_perception/Yolo26RGBD.h   the node: parameters, subscriptions, publishers
+include/camera_perception/Yolo26RGBD.h   the node: parameters, subscriptions, publishers
 src/Yolo26RGBD.cpp                           detection, depth, 3D point, obstacles, drawing
 src/yolo26_rgbd_detect.cpp                   executable: spins the node, OpenCV viewer window
-weights/                                     models (*.onnx) and class name files, installed to share/opti_pessi_perception/weights
+weights/                                     models (*.onnx) and class name files, installed to share/camera_perception/weights
 ```
 
 ## What happens on every frame
@@ -53,8 +53,8 @@ The keep-out radius and the assumed maximum speed of each type are not set here:
 | `rclcpp`, `sensor_msgs`, `geometry_msgs`, `vision_msgs`, `cv_bridge`, `message_filters`, `tf2_ros`, `tf2_geometry_msgs`, `ament_index_cpp` | ROS 2 Jazzy |
 | OpenCV 4 | system (`libopencv-dev`) |
 | `legged_controllers` | this workspace, only for `Obstacle.msg` and `ObstacleArray.msg` |
-| YOLOs-CPP | `src/YOLOs-CPP`, CMake variable `YOLOS_CPP_DIR`. The checkout carries `COLCON_IGNORE`: its own CMakeLists only builds demos |
-| ONNX Runtime 1.20.1, GPU build | `src/YOLOs-CPP/onnxruntime-linux-x64-gpu-1.20.1`, CMake variable `ONNXRUNTIME_DIR`. Found at run time through the RPATH |
+| YOLOs-CPP | `third_party/YOLOs-CPP`, CMake variable `YOLOS_CPP_DIR`. The checkout carries `COLCON_IGNORE`: its own CMakeLists only builds demos |
+| ONNX Runtime 1.20.1, GPU build | `third_party/YOLOs-CPP/onnxruntime-linux-x64-gpu-1.20.1`, CMake variable `ONNXRUNTIME_DIR`. Found at run time through the RPATH |
 
 `find_package(legged_controllers)` also loads everything that package exports (OCS2, Pinocchio, …), which is why
 the first configure needs `pinocchio_DIR`. Moving the two messages into a small message package would remove that.
@@ -63,7 +63,7 @@ the first configure needs `pinocchio_DIR`. Moving the two messages into a small 
 
 ```bash
 source /opt/ros/jazzy/setup.bash && source install/setup.bash
-colcon build --packages-select opti_pessi_perception --cmake-args -DCMAKE_BUILD_TYPE=Release -Dpinocchio_DIR=/opt/openrobots/lib/cmake/pinocchio
+colcon build --packages-select camera_perception --cmake-args -DCMAKE_BUILD_TYPE=Release -Dpinocchio_DIR=/opt/openrobots/lib/cmake/pinocchio
 ```
 
 `pinocchio_DIR` is only needed the first time: CMake keeps it in its cache.
@@ -75,12 +75,12 @@ the `.onnx` in `weights/` and rebuild, since the build copies the files into `in
 
 ```bash
 .venv-yolo/bin/yolo export model=yolo/yolo26n.pt format=onnx     # writes yolo/yolo26n.onnx
-cp yolo/yolo26n.onnx src/legged_control/opti_pessi_perception/weights/
-colcon build --packages-select opti_pessi_perception
+cp yolo/yolo26n.onnx src/perception/camera_perception/weights/
+colcon build --packages-select camera_perception
 ```
 
 * **Where `model` is looked up.** An absolute path is used as it is. A relative one is taken from
-  `share/opti_pessi_perception/weights/` when the file is there, otherwise from the current directory. Only `*.onnx`,
+  `share/camera_perception/weights/` when the file is there, otherwise from the current directory. Only `*.onnx`,
   `*.names` and `*.txt` are installed; the `.pt` weights stay in the source folder.
 * **Class names.** Read from the ONNX metadata, which Ultralytics writes on export. For a model without it, pass
   `labels:=<file>` with one name per line in class-id order; it is looked up like `model`.
@@ -89,14 +89,14 @@ colcon build --packages-select opti_pessi_perception
   datasets of `yolo/personforklift.yaml` or `yolo/forklift_person.yaml`), export it and ask for both:
 
   ```bash
-  ros2 run opti_pessi_perception yolo26_rgbd_detect --ros-args -p model:=best.onnx -p "classes:=[person, forklift]"
+  ros2 run camera_perception yolo26_rgbd_detect --ros-args -p model:=best.onnx -p "classes:=[person, forklift]"
   ```
 
 ## Run
 
 ```bash
-ros2 run opti_pessi_perception yolo26_rgbd_detect
-ros2 run opti_pessi_perception yolo26_rgbd_detect --ros-args -p use_sim_time:=true -p show:=false
+ros2 run camera_perception yolo26_rgbd_detect
+ros2 run camera_perception yolo26_rgbd_detect --ros-args -p use_sim_time:=true -p show:=false
 ```
 
 The depth must be registered to the color image (RealSense: `align_depth.enable:=true`).

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Checks people_perception in a running stack: FAST-LIO and what ranav_bringup fast_lio_slam_launch.xml starts with it,
+"""Checks lidar_perception in a running stack: FAST-LIO and what ranav_bringup fast_lio_slam_launch.xml starts with it,
 on a robot that stands or walks.
 
 Reads --scans consecutive scans of the two FAST-LIO clouds, of their static copies and of /Odometry, prints each check

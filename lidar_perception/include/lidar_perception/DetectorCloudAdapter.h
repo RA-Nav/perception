@@ -21,9 +21,9 @@
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <tf2_ros/transform_broadcaster.h>
 
-#include "people_perception/DetectorCloud.h"
+#include "lidar_perception/DetectorCloud.h"
 
-namespace people_perception {
+namespace lidar_perception {
 
 class DetectorCloudAdapter : public rclcpp::Node {
  public:
@@ -51,4 +51,4 @@ class DetectorCloudAdapter : public rclcpp::Node {
   std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
 };
 
-}  // namespace people_perception
+}  // namespace lidar_perception

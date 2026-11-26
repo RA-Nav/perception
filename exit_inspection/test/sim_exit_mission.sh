@@ -12,7 +12,7 @@
 #   SIM_ARGS as in sim_exit_mapping.sh. Exit code: the one of check_zones_gt.py (0 = pass).
 
 W=$(realpath -m "${1:?work dir}")
-WS=$(realpath "$(dirname "$(realpath "$0")")/../../..")  # the workspace: this is <ws>/src/exit_inspection/test
+WS=$(realpath "$(dirname "$(realpath "$0")")/../../../..")  # the workspace: this is <ws>/src/perception/exit_inspection/test
 TIMEOUT=${TIMEOUT:-1200}
 export ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-83}
 HERE=$(dirname "$(realpath "$0")")

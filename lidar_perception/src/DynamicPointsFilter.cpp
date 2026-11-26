@@ -1,4 +1,4 @@
-#include "people_perception/DynamicPointsFilter.h"
+#include "lidar_perception/DynamicPointsFilter.h"
 
 #include <algorithm>
 #include <array>
@@ -8,9 +8,9 @@
 #include <stdexcept>
 #include <utility>
 
-#include "people_perception/CloudLayout.h"
+#include "lidar_perception/CloudLayout.h"
 
-namespace people_perception {
+namespace lidar_perception {
 
 namespace {
 
@@ -284,4 +284,4 @@ void DynamicPointsFilter::diagnose(diagnostic_updater::DiagnosticStatusWrapper& 
   longest_wait_ = 0.0;
 }
 
-}  // namespace people_perception
+}  // namespace lidar_perception

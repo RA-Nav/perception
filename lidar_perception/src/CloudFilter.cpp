@@ -1,10 +1,10 @@
-#include "people_perception/CloudFilter.h"
+#include "lidar_perception/CloudFilter.h"
 
 #include <cstring>
 
-#include "people_perception/CloudLayout.h"
+#include "lidar_perception/CloudLayout.h"
 
-namespace people_perception {
+namespace lidar_perception {
 
 namespace {
 
@@ -68,4 +68,4 @@ std::optional<size_t> removeInsideCylinders(const sensor_msgs::msg::PointCloud2&
   return count;
 }
 
-}  // namespace people_perception
+}  // namespace lidar_perception

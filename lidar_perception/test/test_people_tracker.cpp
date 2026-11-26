@@ -4,12 +4,12 @@
 #include <random>
 #include <vector>
 
-#include "people_perception/PeopleTracker.h"
+#include "lidar_perception/PeopleTracker.h"
 
-using people_perception::Detection;
-using people_perception::PeopleTracker;
-using people_perception::Track;
-using people_perception::TrackerParams;
+using lidar_perception::Detection;
+using lidar_perception::PeopleTracker;
+using lidar_perception::Track;
+using lidar_perception::TrackerParams;
 
 namespace {
 
